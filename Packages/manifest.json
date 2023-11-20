@@ -6,7 +6,7 @@
     "com.unity.cloud.gltfast": "https://github.com/atteneder/glTFast.git",
     "com.unity.collab-proxy": "2.2.0",
     "com.unity.feature.development": "1.0.1",
-    "com.unity.ml-agents": "file:../Assets/com.unity.ml-agents",
+    "com.unity.ml-agents": "file:../com.unity.ml-agents",
     "com.unity.probuilder": "5.2.0",
     "com.unity.render-pipelines.universal": "14.0.9",
     "com.unity.textmeshpro": "3.0.6",
