@@ -38,6 +38,7 @@ public class Dashboard : MonoBehaviour
 	[Header("UI labels")]
 	public Text gearLabel;
 	public Text speedMphLabel;
+	public Text speedKphLabel;
 
 	[Serializable]
 	public class Needle
@@ -106,8 +107,9 @@ public class Dashboard : MonoBehaviour
 			SetEnabled(singleAxleDiffLockSignal, false);
 			if (gearLabel != null) gearLabel.text = "-";
 			if (speedMphLabel != null) speedMphLabel.text = "-";
+            if (speedKphLabel != null) speedKphLabel.text = "-";
 
-			m_lastVehicleTime = -1.0f;
+            m_lastVehicleTime = -1.0f;
 			return;
 			}
 
@@ -180,7 +182,12 @@ public class Dashboard : MonoBehaviour
 			// Speed Mph label
 
 			if (speedMphLabel != null)
-				speedMphLabel.text = (speedMs * 2.237f).ToString("0") + "\nmph";
+				speedMphLabel.text = (speedMs * 2.237f).ToString("0");
+			
+			// Speed Kph label
+
+			if (speedKphLabel != null)
+				speedKphLabel.text = (speedMs * 3.6f).ToString("0");
 
 			// Gear label
 

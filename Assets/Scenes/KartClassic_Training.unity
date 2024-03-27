@@ -8806,7 +8806,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -17544,6 +17544,10 @@ PrefabInstance:
       propertyPath: throttleAndBrakeMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2069814030545375923, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375925, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_Name
       value: VPP Sport Coupe
@@ -17587,6 +17591,14 @@ PrefabInstance:
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2069814030545375935, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
+      propertyPath: resetState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2069814030545375935, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
+      propertyPath: heightIncrement
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2133823903629047040, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_PlayOnAwake
@@ -17646,9 +17658,9 @@ MonoBehaviour:
     m_Bits: 128
   HitPenalty: -1
   PassCheckpointReward: 1
-  TowardsCheckpointReward: 0
-  SpeedReward: 0
-  AccelerationReward: 0
+  TowardsCheckpointReward: 0.1
+  SpeedReward: 0.1
+  AccelerationReward: 0.01
 --- !u!114 &2059540497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17662,7 +17674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 1
+    VectorObservationSize: 2
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -17671,7 +17683,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: e47a1e0396f6cf24fa4d8dd9f07d7d3c, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Car Behavior

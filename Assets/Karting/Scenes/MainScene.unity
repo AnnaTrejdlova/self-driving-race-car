@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17122526, g: 0.0695448, b: 0.15268382, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12086,10 +12086,6 @@ MonoBehaviour:
   MaxStep: 2000
   Mode: 1
   InitCheckpointIndex: 1
-  Mask:
-    serializedVersion: 2
-    m_Bits: 64
-  Sensors: []
   Colliders:
   - {fileID: 554942957}
   - {fileID: 2129749475}
@@ -12098,20 +12094,11 @@ MonoBehaviour:
   CheckpointMask:
     serializedVersion: 2
     m_Bits: 64
-  AgentSensorTransform: {fileID: 0}
   HitPenalty: -1
   PassCheckpointReward: 1
   TowardsCheckpointReward: 0
   SpeedReward: 0
   AccelerationReward: 0
-  OutOfBoundsMask:
-    serializedVersion: 2
-    m_Bits: 0
-  TrackMask:
-    serializedVersion: 2
-    m_Bits: 64
-  GroundCastDistance: 0
-  ShowRaycasts: 1
 --- !u!4 &1332395070 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 40299501215355906, guid: 230dd9257fca2c249b555f6edd3c8e14, type: 3}

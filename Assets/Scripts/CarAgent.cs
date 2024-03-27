@@ -6,6 +6,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using VehiclePhysics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KartGame.AI.Custom
 {
@@ -66,6 +67,12 @@ namespace KartGame.AI.Custom
         bool m_EndEpisode;
         float m_LastAccumulatedReward;
 
+        float episodeTime;
+
+        string hit = null;
+        string lastHit = null;
+        float lastHitTime = 0;
+
         void Awake()
         {
             m_Car = GetComponent<VPVehicleController>();
@@ -84,10 +91,20 @@ namespace KartGame.AI.Custom
 
         void Update()
         {
-            if (m_EndEpisode)
+            if (m_EndEpisode && (Time.time - episodeTime) <= 0.4)
             {
                 m_EndEpisode = false;
+            }
+
+            if (m_EndEpisode && (Time.time - episodeTime) > 0.4)
+            {
+                m_EndEpisode = false;
+                Debug.Log("End episode!");
                 AddReward(m_LastAccumulatedReward);
+                lastHit = hit;
+                lastHitTime = Time.time;
+
+                Debug.Log("Episode time: " + (Time.time - episodeTime));
                 EndEpisode();
                 OnEpisodeBegin();
             }
@@ -103,7 +120,7 @@ namespace KartGame.AI.Custom
             // Ensure that the agent touched the checkpoint and the new index is greater than the m_CheckpointIndex.
             if (triggered > 0 && index > m_CheckpointIndex || index == 0 && m_CheckpointIndex == Colliders.Length - 1)
             {
-                AddReward(PassCheckpointReward);
+                AddReward(PassCheckpointReward);                                       
                 m_CheckpointIndex = index;
             }
         }
@@ -126,14 +143,23 @@ namespace KartGame.AI.Custom
             sensor.AddObservation(m_rb.velocity.magnitude);
 
             m_LastAccumulatedReward = 0.0f;
-            m_EndEpisode = false;;
+            m_EndEpisode = false;
+
+            if (hit != null)
+            {
+                Debug.Log("HIT -> End episode");
+                m_LastAccumulatedReward += HitPenalty;
+                m_EndEpisode = true;
+            }
+
+            sensor.AddObservation(hit!=null);
         }
 
         public override void OnActionReceived(ActionBuffers actions)
         {
-            Debug.Log(actions.DiscreteActions[0]);
-            Debug.Log(actions.DiscreteActions[1]);
-            Debug.Log("");
+            //Debug.Log(actions.DiscreteActions[0]);
+            //Debug.Log(actions.DiscreteActions[1]);
+            //Debug.Log("");
             base.OnActionReceived(actions);
             InterpretDiscreteActions(actions);
 
@@ -155,17 +181,46 @@ namespace KartGame.AI.Custom
 
         public override void OnEpisodeBegin()
         {
+            Debug.Log("OnEpisodeBegin");
             switch (Mode)
             {
                 case AgentMode.Training:
+                    episodeTime = Time.time;
                     m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
                     var collider = Colliders[m_CheckpointIndex];
-                    transform.localRotation = collider.transform.rotation;
-                    transform.position = collider.transform.position;
-                    m_rb.velocity = default;
+                    //transform.localRotation = collider.transform.rotation;
+                    //transform.position = collider.transform.position;
+
+                    // Teleport
+                    m_rb.Sleep();
+                    m_Car.gameObject.SetActive(false);
+                    m_rb.isKinematic = true;
+                    m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
+                    //m_Car.HardReposition(collider.transform.position - new Vector3(0,1,0), collider.transform.rotation, true);
+                    //m_rb.transform.position = collider.transform.position - new Vector3(0, 1, 0);
+                    //m_rb.transform.rotation = collider.transform.rotation;
+                    m_rb.isKinematic = false;
+                    m_Car.gameObject.SetActive(true);
+                    m_rb.WakeUp();
+                    //m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
+
+                    //await Task.Delay(1000);
+                    //m_Car.paused = false;
+                    //m_rb.isKinematic = false;
+                    //m_Car.SingleStep();
+
+                    //m_rb.velocity = default;
                     m_Acceleration = false;
                     m_Brake = false;
+                    hit = null;
                     m_Steering = 0f;
+                    //await Task.Delay(1000);
+
+                    Debug.Log("Position:");
+                    Debug.Log(collider.transform.position);
+                    Debug.Log(m_Car.cachedTransform.position);
+                    Debug.Log(m_Car.transform.position);
+                    Debug.Log(m_rb.transform.position);
                     RequestDecision();
                     break;
                 default:
@@ -175,36 +230,54 @@ namespace KartGame.AI.Custom
 
         void InterpretDiscreteActions(ActionBuffers actions)
         {
+            //Debug.Log(actions.DiscreteActions.Length);
             //Debug.Log(actions.DiscreteActions[0]);
             //Debug.Log(actions.DiscreteActions[1]);
             m_Steering = actions.DiscreteActions[0] - 1f;
-            m_Acceleration = actions.DiscreteActions[1] >= 1.0f;
+            m_Acceleration = actions.DiscreteActions[1] > 1.0f;
             m_Brake = actions.DiscreteActions[1] < 1.0f;
         }
 
         public override void Heuristic(in ActionBuffers actionsOut)
         {
-            var continuousActionsOut = actionsOut.DiscreteActions;
-            continuousActionsOut[0] = 1;
-            continuousActionsOut[1] = 1;
+            var discreteActionsOut = actionsOut.DiscreteActions;
+            discreteActionsOut[0] = 1;
+            discreteActionsOut[1] = 1;
             if (Input.GetKey(KeyCode.A))
             {
-                continuousActionsOut[0] = 0;
+                discreteActionsOut[0] = 0;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                continuousActionsOut[0] = 2;
+                discreteActionsOut[0] = 2;
             }
             if (Input.GetKey(KeyCode.W))
             {
-                continuousActionsOut[1] = 2;
+                discreteActionsOut[1] = 2;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                continuousActionsOut[1] = 0;
+                discreteActionsOut[1] = 0;
             }
             //Debug.Log(continuousActionsOut[0]);
             //Debug.Log(continuousActionsOut[1]);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Track") && collision.gameObject.name != lastHit && (Time.time - lastHitTime) > 0.4)
+            {
+                hit = collision.gameObject.name;
+            }
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.Label("Reward: " + GetCumulativeReward().ToString());
+            GUILayout.Label("CompletedEpisodes: " + CompletedEpisodes.ToString());
+            GUILayout.Label("Episode time: " + (Time.time - episodeTime));
+            GUILayout.Label("Position: " + m_Car.transform.position.ToString()); 
+            GUILayout.Label("fixedDeltaTime: " + Time.fixedDeltaTime.ToString());
         }
     }
 }
