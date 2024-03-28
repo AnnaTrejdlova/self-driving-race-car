@@ -34,6 +34,6 @@
             <ui:Button text="Run" display-tooltip-when-elided="true" name="StartButton" class="blue-button" />
             <ui:Button text="Spustit seznámení s VR" display-tooltip-when-elided="true" name="StartTrainingButton" class="blue-outline-button" style="display: none;" />
         </ui:VisualElement>
-        <ui:Label tabindex="-1" text="Version: 0.0.0" parse-escape-sequences="true" display-tooltip-when-elided="true" name="VersionInfo" style="position: absolute; bottom: 3%; right: 3%;" />
+        <ui:Label tabindex="-1" text="Version: 0.0" parse-escape-sequences="true" display-tooltip-when-elided="true" name="VersionInfo" style="position: absolute; bottom: 3%; right: 3%;" />
     </ui:VisualElement>
 </ui:UXML>

@@ -46,9 +46,13 @@ public class TimeManager2 : MonoBehaviour
         filePath = Application.persistentDataPath + "/lapTimes.txt"; // Application.persistentDataPath = %userprofile%\AppData\LocalLow\<companyname>\
         var items = await ReadFromFileAsync();
 
-        bestAllTime = (items.Length == 0) ? int.MaxValue : items.Min();
+        bestAllTime = (items.Length == 0) ? 0 : items.Min();
         Debug.Log("bestAllTime: " + bestAllTime);
         BestAllTimeText.text = "Total Best: " + string.Format("{0:0}:{1:00.000}", Math.Floor(bestAllTime / 60), bestAllTime % 60);
+        if (bestAllTime == 0)
+        {
+            bestAllTime = float.MaxValue;
+        }
         bestSessionTime = float.MaxValue;
     }
 
@@ -125,6 +129,11 @@ public class TimeManager2 : MonoBehaviour
 
     static async Task<float[]> ReadFromFileAsync()
     {
+        if (!File.Exists(filePath))
+        {
+            File.Create(filePath);
+            return new float[] { };
+        }
         using var reader = new StreamReader(filePath);
         string str = await reader.ReadToEndAsync();
         return str.SplitLines().Select(line => float.Parse(line)).ToArray();

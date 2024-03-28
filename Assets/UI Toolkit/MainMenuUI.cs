@@ -1,4 +1,5 @@
 using GLTFast.Schema;
+using Grpc.Core;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ public class MainMenuUI : MonoBehaviour
 {
     Scene selectedScene;
     Dictionary<Scene, string> scenes;
-    Transmission transmission;
 
     private void OnEnable()
     {
@@ -36,6 +36,8 @@ public class MainMenuUI : MonoBehaviour
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
         List<RadioButton> radioButtonList;
+
+        root.Q<Label>("VersionInfo").text = "Version: " + Application.version;
 
         // Map group
         RadioButtonGroup mapGroup = root.Q<RadioButtonGroup>("MapGroup");

@@ -37,7 +37,6 @@ public class HandlePauseMenu : MonoBehaviour
                     canvas.SetActive(true);
                     vehicle.paused = true;
                     Time.timeScale = 0f;
-                    ApplicationModel.assists[Assists.ABS] = false;
                 }
                 else
                 {
