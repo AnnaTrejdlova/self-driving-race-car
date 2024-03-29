@@ -1,4 +1,5 @@
-﻿﻿using System;
+﻿using EdyCommonTools;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
+using VehiclePhysics;
 
 public class TimeManager2 : MonoBehaviour
 { 
@@ -23,12 +25,18 @@ public class TimeManager2 : MonoBehaviour
 
     private List<float> lapTimes;
     private int lapCount;
+    private int lineLapCount;
     private float bestSessionTime;
     private float bestAllTime;
 
     private TextMeshProUGUI BestSessionTimeText;
     private TextMeshProUGUI BestAllTimeText;
     private TextMeshProUGUI LastLapTimeText;
+    private TextMeshProUGUI FitnessText;
+
+    private Spline raceLine;
+    private float startLinePosition; // in points on spline
+    private Rigidbody vehicleRB;
 
     private static string filePath;
 
@@ -37,10 +45,17 @@ public class TimeManager2 : MonoBehaviour
         // Setup
         accTime = 0f;
         lapTimes = new List<float>();
+        lapCount = 0;
 
         BestSessionTimeText = GameObject.Find("BestSessionTime").GetComponent<TextMeshProUGUI>();
         BestAllTimeText = GameObject.Find("BestAllTime").GetComponent<TextMeshProUGUI>();
         LastLapTimeText = GameObject.Find("LastLapTime").GetComponent<TextMeshProUGUI>();
+
+        FitnessText = GameObject.Find("Fitness").GetComponent<TextMeshProUGUI>();
+        raceLine = GameObject.Find("RacePath").GetComponent<Spline>();
+        vehicleRB = GameObject.Find("VPP Sport Coupe").GetComponent<Rigidbody>();
+
+        startLinePosition = raceLine.Project(GameObject.Find("StartFinishLine").transform.position);
 
         // Read best time
         filePath = Application.persistentDataPath + "/lapTimes.txt"; // Application.persistentDataPath = %userprofile%\AppData\LocalLow\<companyname>\
@@ -59,8 +74,20 @@ public class TimeManager2 : MonoBehaviour
     void Update()
     {
         if (!raceStarted) return;
-        
-        // after race started
+        // After race started
+
+        // Distance driven
+        var projectedPoint = raceLine.Project(vehicleRB.position);
+        if (lineLapCount < lapCount && projectedPoint >= startLinePosition)
+        {
+            lineLapCount++;
+        }
+        projectedPoint = (projectedPoint < startLinePosition) ? projectedPoint + raceLine.points.Length : projectedPoint;
+        FitnessText.text = "Fitness: " +
+            string.Format("{0:0.0}", lineLapCount * raceLine.MeasureDistance(startLinePosition, startLinePosition + raceLine.points.Length, Spline.WrapMode.Clamp)
+            + raceLine.MeasureDistance(startLinePosition, projectedPoint, Spline.WrapMode.Clamp));
+
+        // Timer
         accTime += Time.deltaTime;
 
         timerText.gameObject.SetActive(true);

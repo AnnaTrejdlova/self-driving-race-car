@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 using VehiclePhysics;
 using System.Linq;
 using System.Threading.Tasks;
+using EdyCommonTools;
 
 namespace KartGame.AI.Custom
 {
@@ -40,9 +41,10 @@ namespace KartGame.AI.Custom
         public Collider[] Colliders;
         [Tooltip("What layer are the checkpoints on? This should be an exclusive layer for the agent to use.")]
         public LayerMask CheckpointMask;
-#endregion
+        public Spline raceLine;
+        #endregion
 
-#region Rewards
+        #region Rewards
         [Header("Rewards"), Tooltip("What penatly is given when the agent crashes?")]
         public float HitPenalty = -1f;
         [Tooltip("How much reward is given when the agent successfully passes the checkpoints?")]
