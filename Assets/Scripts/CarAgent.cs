@@ -8,6 +8,8 @@ using VehiclePhysics;
 using System.Linq;
 using System.Threading.Tasks;
 using EdyCommonTools;
+using System.Collections.Generic;
+using TMPro;
 
 namespace KartGame.AI.Custom
 {
@@ -56,6 +58,7 @@ namespace KartGame.AI.Custom
         [Tooltip("Reward the agent when it keeps accelerating")]
         public float AccelerationReward;
         #endregion
+        private Dictionary<string, float> m_RewardsDebug;
 
 
         VPVehicleController m_Car;
@@ -85,6 +88,14 @@ namespace KartGame.AI.Custom
 
         void Start()
         {
+            m_RewardsDebug = new()
+            {
+                { "hitPenalty", 0f },
+                { "passCheckpoint", 0f },
+                { "towardsCheckpoint", 0f },
+                { "speed", 0f },
+                { "acceleration", 0f },
+            };
             // If the agent is training, then at the start of the simulation, pick a random checkpoint to train the agent.
             OnEpisodeBegin();
 
@@ -107,7 +118,9 @@ namespace KartGame.AI.Custom
                 lastHitTime = Time.time;
 
                 Debug.Log("Episode time: " + (Time.time - episodeTime));
-                EndEpisode();
+                m_rb.Sleep();
+                m_Car.gameObject.SetActive(false);
+                //EndEpisode();
                 OnEpisodeBegin();
             }
         }
@@ -177,8 +190,11 @@ namespace KartGame.AI.Custom
 
             // Add rewards if the agent is heading in the right direction
             AddReward(reward * TowardsCheckpointReward);
+            m_RewardsDebug["towardsCheckpoint"] += reward * TowardsCheckpointReward;
             AddReward((m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward);
+            m_RewardsDebug["acceleration"] += (m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward;
             AddReward(m_rb.velocity.magnitude * SpeedReward);
+            m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
         }
 
         public override void OnEpisodeBegin()
@@ -194,8 +210,8 @@ namespace KartGame.AI.Custom
                     //transform.position = collider.transform.position;
 
                     // Teleport
-                    m_rb.Sleep();
-                    m_Car.gameObject.SetActive(false);
+                    //m_rb.Sleep();
+                    //m_Car.gameObject.SetActive(false);
                     m_rb.isKinematic = true;
                     m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
                     //m_Car.HardReposition(collider.transform.position - new Vector3(0,1,0), collider.transform.rotation, true);
@@ -223,7 +239,7 @@ namespace KartGame.AI.Custom
                     Debug.Log(m_Car.cachedTransform.position);
                     Debug.Log(m_Car.transform.position);
                     Debug.Log(m_rb.transform.position);
-                    RequestDecision();
+                    //RequestDecision();
                     break;
                 default:
                     break;
@@ -280,6 +296,12 @@ namespace KartGame.AI.Custom
             GUILayout.Label("Episode time: " + (Time.time - episodeTime));
             GUILayout.Label("Position: " + m_Car.transform.position.ToString()); 
             GUILayout.Label("fixedDeltaTime: " + Time.fixedDeltaTime.ToString());
+
+            GameObject.Find("/GameHUD/HUD/Rewards").GetComponent<TextMeshProUGUI>().text = 
+$@"<b>Rewards:</b>
+towardsCheckpoint: {m_RewardsDebug["towardsCheckpoint"].ToString("F2")}
+acceleration: {m_RewardsDebug["acceleration"].ToString("F2")}
+speed: {m_RewardsDebug["speed"].ToString("F2")}";
         }
     }
 }

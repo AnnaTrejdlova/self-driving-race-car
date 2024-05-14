@@ -5,7 +5,7 @@ using VehiclePhysics;
 
 public class GameManager : MonoBehaviour
 {
-    public VPVehicleController vehicle;
+    VPVehicleController vehicle;
 
     // Start is called before the first frame update, gets also called after unpausing
     public void Start()
