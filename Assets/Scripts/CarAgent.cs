@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using EdyCommonTools;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UIElements;
+using UnityEditor.Rendering;
 
 namespace KartGame.AI.Custom
 {
@@ -58,12 +60,13 @@ namespace KartGame.AI.Custom
         [Tooltip("Reward the agent when it keeps accelerating")]
         public float AccelerationReward;
         #endregion
-        private Dictionary<string, float> m_RewardsDebug;
+        Dictionary<string, float> m_RewardsDebug;
 
 
         VPVehicleController m_Car;
-        Rigidbody m_rb;
+        public Rigidbody m_rb;
         VPStandardInput m_Input;
+        public Spline m_CenterlinePath;
         bool m_Acceleration;
         bool m_Brake;
         float m_Steering;
@@ -155,6 +158,7 @@ namespace KartGame.AI.Custom
 
         public override void CollectObservations(VectorSensor sensor)
         {
+            sensor.AddObservation(m_rb.position);
             sensor.AddObservation(m_rb.velocity.magnitude);
 
             m_LastAccumulatedReward = 0.0f;
@@ -168,6 +172,15 @@ namespace KartGame.AI.Custom
             }
 
             sensor.AddObservation(hit!=null);
+
+            // Position from centerline
+            float splinePos = m_CenterlinePath.Project(m_rb.position);
+            Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
+            sensor.AddObservation((m_rb.position - projectedPoint).magnitude);
+
+            // Rotation from centerline
+            Vector3 tangent = m_CenterlinePath.GetTangent(m_CenterlinePath.Project(m_rb.position));
+            sensor.AddObservation(Vector3.Angle(m_rb.transform.forward, tangent));
         }
 
         public override void OnActionReceived(ActionBuffers actions)
@@ -239,6 +252,17 @@ namespace KartGame.AI.Custom
                     Debug.Log(m_Car.cachedTransform.position);
                     Debug.Log(m_Car.transform.position);
                     Debug.Log(m_rb.transform.position);
+
+                    // Reset rewards
+                    m_RewardsDebug = new()
+                    {
+                        { "hitPenalty", 0f },
+                        { "passCheckpoint", 0f },
+                        { "towardsCheckpoint", 0f },
+                        { "speed", 0f },
+                        { "acceleration", 0f },
+                    };
+
                     //RequestDecision();
                     break;
                 default:
@@ -302,6 +326,18 @@ $@"<b>Rewards:</b>
 towardsCheckpoint: {m_RewardsDebug["towardsCheckpoint"].ToString("F2")}
 acceleration: {m_RewardsDebug["acceleration"].ToString("F2")}
 speed: {m_RewardsDebug["speed"].ToString("F2")}";
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            float splinePos = m_CenterlinePath.Project(m_rb.position);
+            Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
+            Vector3 tangent = m_CenterlinePath.GetTangent(m_CenterlinePath.Project(m_rb.position));
+
+            Gizmos.DrawLine(projectedPoint, projectedPoint + tangent.normalized * 2);
+            Gizmos.DrawSphere(projectedPoint, 0.2f);
+            Gizmos.DrawLine(m_rb.position + new Vector3(0, 1.5f, 0), m_rb.position + m_rb.transform.forward*3 + new Vector3(0, 1.5f, 0));
         }
     }
 }

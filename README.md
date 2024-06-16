@@ -22,6 +22,6 @@ In root ml-agents folder run to observe training:
 ```
 cd %USERPROFILE%/Documents/Programming/ml-agents
 conda activate mlagents
-mlagents-learn config/Car-sac-gail-bc-sp.yaml --run-id=sac-gailconcurrent4 --env="C:\Users\atrej\Unity\ML URP\Build_training_env\RacingGame" --num-envs=4 --force
+mlagents-learn config/Car-sac-gail-bc-sp.yaml --run-id=sac-gailconcurrent_centerline --env="C:\Users\atrej\Unity\ML URP\Build_training_env\RacingGame" --num-envs=4 --force
 
 ```
