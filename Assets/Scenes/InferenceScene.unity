@@ -14493,6 +14493,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7797391016388624522, guid: ca9b8cb628757af4fbb9f00728cb1711, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7797391016390733352, guid: ca9b8cb628757af4fbb9f00728cb1711, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -14552,6 +14556,10 @@ PrefabInstance:
     - target: {fileID: 7797391016942025246, guid: ca9b8cb628757af4fbb9f00728cb1711, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7797391016944112824, guid: ca9b8cb628757af4fbb9f00728cb1711, type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7797391016967305627, guid: ca9b8cb628757af4fbb9f00728cb1711, type: 3}
       propertyPath: m_Layer
@@ -26006,7 +26014,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 3000
-  Mode: 0
+  Mode: 1
   InitCheckpointIndex: 0
   Colliders: []
   CheckpointMask:
@@ -26044,7 +26052,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 38dd8947064a95b45a3b042f822b7be6, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: Car Behavior
   TeamId: 0
   m_UseChildSensors: 1
