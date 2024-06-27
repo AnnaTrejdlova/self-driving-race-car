@@ -315,6 +315,7 @@ namespace KartGame.AI.Custom
 
         private void OnGUI()
         {
+            GUILayout.Label("frictionMultiplier: " + m_Car.tireFriction.frictionMultiplier.ToString());
             GUILayout.Label("Reward: " + GetCumulativeReward().ToString());
             GUILayout.Label("CompletedEpisodes: " + CompletedEpisodes.ToString());
             GUILayout.Label("Episode time: " + (Time.time - episodeTime));
