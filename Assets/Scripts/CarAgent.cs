@@ -208,8 +208,17 @@ namespace KartGame.AI.Custom
             m_RewardsDebug["towardsCheckpoint"] += reward * TowardsCheckpointReward;
             AddReward((m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward);
             m_RewardsDebug["acceleration"] += (m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward;
-            AddReward(m_rb.velocity.magnitude * SpeedReward);
-            m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
+
+            int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
+            if (selectedGear > 0)
+            {
+                AddReward(m_rb.velocity.magnitude * SpeedReward);
+                m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
+            } else if (selectedGear == -1)
+            {
+                AddReward(-m_rb.velocity.magnitude * SpeedReward);
+                m_RewardsDebug["speed"] -= m_rb.velocity.magnitude * SpeedReward;
+            }
         }
 
         private void TrackCheckpoints_OnPlayerCorrectCheckpoint(object sender, System.EventArgs e)
