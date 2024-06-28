@@ -37,7 +37,7 @@ public class GroundManager : MonoBehaviour
         if (hit.collider)
         {
             vehicleController.GetWheelTireFriction(wheelIndex).frictionMultiplier = hit.collider.material.dynamicFriction;
-            Debug.Log(vehicleController.GetWheelTireFriction(wheelIndex).frictionMultiplier);
+            //Debug.Log(vehicleController.GetWheelTireFriction(wheelIndex).frictionMultiplier);
         }
     }
 }
