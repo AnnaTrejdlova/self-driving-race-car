@@ -160,8 +160,21 @@ namespace KartGame.AI.Custom
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            sensor.AddObservation(m_rb.position);
-            sensor.AddObservation(m_rb.velocity.magnitude);
+            sensor.AddObservation(m_rb.position); // Car position
+
+            int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
+            sensor.AddObservation((selectedGear == -1) ?-1f:1f * m_rb.velocity.magnitude); // Car velocity
+
+            bool isLimiterEngaged = false;
+            if (m_Car.speedControl.speedLimiter)
+            {
+                if (m_rb.velocity.magnitude >= m_Car.speedControl.speedLimit* 0.95f)
+                {
+                    isLimiterEngaged = true;
+                }
+            }
+            Debug.Log(m_Car.speedControl.speedLimiter +", "+ isLimiterEngaged + ", " + m_Car.speedControl.speedLimit * 0.95f +", "+ m_rb.velocity.magnitude);
+            sensor.AddObservation(isLimiterEngaged); // Speed limiter engaged
 
             m_LastAccumulatedReward = 0.0f;
             m_EndEpisode = false;
@@ -178,11 +191,11 @@ namespace KartGame.AI.Custom
             // Position from centerline
             float splinePos = m_CenterlinePath.Project(m_rb.position);
             Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
-            sensor.AddObservation((m_rb.position - projectedPoint).magnitude);
+            sensor.AddObservation((m_rb.position - projectedPoint).magnitude); // Position from centerline
 
             // Rotation from centerline
             Vector3 tangent = m_CenterlinePath.GetTangent(m_CenterlinePath.Project(m_rb.position));
-            sensor.AddObservation(Vector3.Angle(m_rb.transform.forward, tangent));
+            sensor.AddObservation(Vector3.Angle(m_rb.transform.forward, tangent)); // Rotation from centerline
         }
 
         public override void OnActionReceived(ActionBuffers actions)
