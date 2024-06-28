@@ -103,6 +103,8 @@ namespace KartGame.AI.Custom
             OnEpisodeBegin();
 
             if (Mode == AgentMode.Inferencing) m_CheckpointIndex = InitCheckpointIndex;
+
+            TrackCheckpoints.OnPlayerCorrectCheckpoint += TrackCheckpoints_OnPlayerCorrectCheckpoint;
         }
 
         void Update()
@@ -210,6 +212,12 @@ namespace KartGame.AI.Custom
             m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
         }
 
+        private void TrackCheckpoints_OnPlayerCorrectCheckpoint(object sender, System.EventArgs e)
+        {
+            AddReward(PassCheckpointReward);
+            m_RewardsDebug["passCheckpoint"] += PassCheckpointReward;
+        }
+
         public override void OnEpisodeBegin()
         {
             Debug.Log("OnEpisodeBegin");
@@ -219,6 +227,9 @@ namespace KartGame.AI.Custom
                     episodeTime = Time.time;
                     m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
                     var collider = Colliders[m_CheckpointIndex];
+
+                    collider.GetComponent<CheckpointSingle>().trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
+
                     //transform.localRotation = collider.transform.rotation;
                     //transform.position = collider.transform.position;
 
@@ -324,6 +335,7 @@ namespace KartGame.AI.Custom
 
             GameObject.Find("/GameHUD/HUD/Rewards").GetComponent<TextMeshProUGUI>().text = 
 $@"<b>Rewards:</b>
+passCheckpoint: {m_RewardsDebug["passCheckpoint"].ToString("F2")}
 towardsCheckpoint: {m_RewardsDebug["towardsCheckpoint"].ToString("F2")}
 acceleration: {m_RewardsDebug["acceleration"].ToString("F2")}
 speed: {m_RewardsDebug["speed"].ToString("F2")}";
