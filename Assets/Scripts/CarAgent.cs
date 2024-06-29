@@ -173,7 +173,6 @@ namespace KartGame.AI.Custom
                     isLimiterEngaged = true;
                 }
             }
-            Debug.Log(m_Car.speedControl.speedLimiter +", "+ isLimiterEngaged + ", " + m_Car.speedControl.speedLimit * 0.95f +", "+ m_rb.velocity.magnitude);
             sensor.AddObservation(isLimiterEngaged); // Speed limiter engaged
 
             m_LastAccumulatedReward = 0.0f;
