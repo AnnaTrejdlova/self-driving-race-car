@@ -12,7 +12,7 @@ public class TrackCheckpoints : MonoBehaviour {
     [SerializeField] private List<Transform> carTransformList;
 
     public Transform checkpointsParent;
-    private List<CheckpointSingle> checkpointSingleList;
+    public List<CheckpointSingle> checkpointSingleList;
     public List<int> nextCheckpointSingleIndexList;
 
     private void Awake() {
@@ -35,7 +35,7 @@ public class TrackCheckpoints : MonoBehaviour {
         int nextCheckpointSingleIndex = nextCheckpointSingleIndexList[carTransformList.IndexOf(carTransform)];
         if (checkpointSingleList.IndexOf(checkpointSingle) == nextCheckpointSingleIndex) {
             // Correct checkpoint
-            Debug.Log("Correct");
+            Debug.Log("Correct, " + checkpointSingle.name);
             CheckpointSingle correctCheckpointSingle = checkpointSingleList[nextCheckpointSingleIndex];
             //correctCheckpointSingle.Hide();
 
@@ -44,7 +44,7 @@ public class TrackCheckpoints : MonoBehaviour {
             OnPlayerCorrectCheckpoint?.Invoke(this, EventArgs.Empty);
         } else {
             // Wrong checkpoint
-            Debug.Log("Wrong");
+            Debug.Log("Wrong, " + checkpointSingle.name + ", correct is: " + checkpointSingleList[nextCheckpointSingleIndex]);
             OnPlayerWrongCheckpoint?.Invoke(this, EventArgs.Empty);
 
             CheckpointSingle correctCheckpointSingle = checkpointSingleList[nextCheckpointSingleIndex];

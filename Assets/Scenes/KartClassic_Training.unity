@@ -9319,6 +9319,7 @@ MonoBehaviour:
   carTransformList:
   - {fileID: 1109015127}
   checkpointsParent: {fileID: 8781834915612518165}
+  checkpointSingleList: []
   nextCheckpointSingleIndexList: 
 --- !u!1001 &802000868
 PrefabInstance:
@@ -12847,7 +12848,7 @@ GameObject:
   - component: {fileID: 1106046736}
   - component: {fileID: 1106046735}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 8 (1)
+  m_Name: Agent Checkpoint A 11
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25599,7 +25600,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: Car Behavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -25649,7 +25650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   DecisionStep: 0
-  TakeActionsBetweenDecisions: 1
+  TakeActionsBetweenDecisions: 0
 --- !u!114 &2059540501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32647,7 +32648,7 @@ GameObject:
   - component: {fileID: 8781834914356867692}
   - component: {fileID: 1025403094}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 9
+  m_Name: Agent Checkpoint A 02
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32701,7 +32702,7 @@ GameObject:
   - component: {fileID: 8781834914700022061}
   - component: {fileID: 1602872626}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 10
+  m_Name: Agent Checkpoint A 03
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32755,7 +32756,7 @@ GameObject:
   - component: {fileID: 8781834914826160860}
   - component: {fileID: 1907274041}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 6
+  m_Name: Agent Checkpoint A 09
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32809,7 +32810,7 @@ GameObject:
   - component: {fileID: 8781834914946779114}
   - component: {fileID: 183270642}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 5
+  m_Name: Agent Checkpoint A 08
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32863,7 +32864,7 @@ GameObject:
   - component: {fileID: 8781834914986608827}
   - component: {fileID: 1620226278}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 7
+  m_Name: Agent Checkpoint A 10
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32917,7 +32918,7 @@ GameObject:
   - component: {fileID: 8781834915163088952}
   - component: {fileID: 1954931834}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 3
+  m_Name: Agent Checkpoint A 06
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33030,7 +33031,7 @@ GameObject:
   - component: {fileID: 8781834915255852649}
   - component: {fileID: 552166346}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 8
+  m_Name: Agent Checkpoint A 01
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33126,7 +33127,7 @@ GameObject:
   - component: {fileID: 8781834915624611698}
   - component: {fileID: 2134955950}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 1
+  m_Name: Agent Checkpoint A 04
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33242,7 +33243,7 @@ GameObject:
   - component: {fileID: 8781834915938652245}
   - component: {fileID: 1672219801}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 4
+  m_Name: Agent Checkpoint A 07
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33296,7 +33297,7 @@ GameObject:
   - component: {fileID: 8781834915986763128}
   - component: {fileID: 1774848829}
   m_Layer: 7
-  m_Name: Agent Checkpoint A 2
+  m_Name: Agent Checkpoint A 05
   m_TagString: Checkpoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

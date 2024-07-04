@@ -75,7 +75,7 @@ namespace KartGame.AI.Custom
         bool m_EndEpisode;
         float m_LastAccumulatedReward;
 
-        float episodeTime;
+        float episodeStartTime;
 
         string hit = null;
         string lastHit = null;
@@ -109,12 +109,12 @@ namespace KartGame.AI.Custom
 
         void Update()
         {
-            if (m_EndEpisode && (Time.time - episodeTime) <= 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) <= 0.4)
             {
                 m_EndEpisode = false;
             }
 
-            if (m_EndEpisode && (Time.time - episodeTime) > 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) > 0.4)
             {
                 m_EndEpisode = false;
                 Debug.Log("End episode!");
@@ -122,7 +122,7 @@ namespace KartGame.AI.Custom
                 lastHit = hit;
                 lastHitTime = Time.time;
 
-                Debug.Log("Episode time: " + (Time.time - episodeTime));
+                Debug.Log("Episode time: " + (Time.time - episodeStartTime));
                 m_rb.Sleep();
                 m_Car.gameObject.SetActive(false);
                 //EndEpisode();
@@ -242,14 +242,23 @@ namespace KartGame.AI.Custom
         public override void OnEpisodeBegin()
         {
             Debug.Log("OnEpisodeBegin");
+
+            // Prevent OnEpisodeBegin to run twice
+            // Caused by disabling GameObject with associated CarAgent script (needed for succesful teleport)
+            if ((Time.time - episodeStartTime) < 0.1f)
+            {
+                return;
+            }
             switch (Mode)
             {
                 case AgentMode.Training:
-                    episodeTime = Time.time;
+                    episodeStartTime = Time.time;
                     m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
                     var collider = Colliders[m_CheckpointIndex];
 
-                    collider.GetComponent<CheckpointSingle>().trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
+                    var trackCheckpoints = collider.GetComponent<CheckpointSingle>().trackCheckpoints;
+                    
+                    trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
 
                     //transform.localRotation = collider.transform.rotation;
                     //transform.position = collider.transform.position;
@@ -279,11 +288,11 @@ namespace KartGame.AI.Custom
                     m_Steering = 0f;
                     //await Task.Delay(1000);
 
-                    Debug.Log("Position:");
-                    Debug.Log(collider.transform.position);
-                    Debug.Log(m_Car.cachedTransform.position);
-                    Debug.Log(m_Car.transform.position);
-                    Debug.Log(m_rb.transform.position);
+                    //Debug.Log("Position:");
+                    //Debug.Log(collider.transform.position);
+                    //Debug.Log(m_Car.cachedTransform.position);
+                    //Debug.Log(m_Car.transform.position);
+                    //Debug.Log(m_rb.transform.position);
 
                     // Reset rewards
                     m_RewardsDebug = new()
@@ -339,7 +348,7 @@ namespace KartGame.AI.Custom
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Track") && collision.gameObject.name != lastHit && (Time.time - lastHitTime) > 0.4)
+            if (collision.gameObject.CompareTag("Track") && collision.gameObject.name != lastHit && (Time.time - lastHitTime) > 0.4f)
             {
                 hit = collision.gameObject.name;
             }
@@ -350,7 +359,7 @@ namespace KartGame.AI.Custom
             GUILayout.Label("frictionMultiplier: " + m_Car.tireFriction.frictionMultiplier.ToString());
             GUILayout.Label("Reward: " + GetCumulativeReward().ToString());
             GUILayout.Label("CompletedEpisodes: " + CompletedEpisodes.ToString());
-            GUILayout.Label("Episode time: " + (Time.time - episodeTime));
+            GUILayout.Label("Episode time: " + (Time.time - episodeStartTime));
             GUILayout.Label("Position: " + m_Car.transform.position.ToString()); 
             GUILayout.Label("fixedDeltaTime: " + Time.fixedDeltaTime.ToString());
 
