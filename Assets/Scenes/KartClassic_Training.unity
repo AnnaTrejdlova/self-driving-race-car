@@ -12398,6 +12398,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -51.80005
       objectReference: {fileID: 0}
+    - target: {fileID: 4698573894044714478, guid: 3cf7a0b98f371264c8f16b2ae8b6f8ab, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5181269818619386091, guid: 3cf7a0b98f371264c8f16b2ae8b6f8ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -25561,7 +25565,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 3000
+  MaxStep: 10000
   Mode: 0
   InitCheckpointIndex: 0
   Colliders: []
@@ -25569,10 +25573,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   raceLine: {fileID: 1751281914}
-  HitPenalty: -100
-  PassCheckpointReward: 100
+  HitPenalty: -1
+  PassCheckpointReward: 10
   TowardsCheckpointReward: 0.05
-  SpeedReward: 0.05
+  SpeedReward: 0.03
   AccelerationReward: 0.01
   m_rb: {fileID: 177837611}
   m_CenterlinePath: {fileID: 189290553}
@@ -25589,7 +25593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 8
+    VectorObservationSize: 6
     NumStackedVectorObservations: 3
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -25600,7 +25604,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
+  m_BehaviorType: 0
   m_BehaviorName: Car Behavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -25663,7 +25667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Record: 1
+  Record: 0
   NumStepsToRecord: 0
   DemonstrationName: 
   DemonstrationDirectory: 

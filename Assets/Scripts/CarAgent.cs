@@ -160,7 +160,7 @@ namespace KartGame.AI.Custom
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            sensor.AddObservation(m_rb.position); // Car position
+            //sensor.AddObservation(m_rb.position); // Car position
 
             int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
             sensor.AddObservation((selectedGear == -1) ?-1f:1f * m_rb.velocity.magnitude); // Car velocity
@@ -189,6 +189,7 @@ namespace KartGame.AI.Custom
 
             // Position from centerline
             float splinePos = m_CenterlinePath.Project(m_rb.position);
+            sensor.AddObservation(splinePos); // Position on the lap
             Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
             sensor.AddObservation((m_rb.position - projectedPoint).magnitude); // Position from centerline
 
