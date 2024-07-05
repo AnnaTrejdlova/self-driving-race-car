@@ -81,6 +81,8 @@ namespace KartGame.AI.Custom
         string lastHit = null;
         float lastHitTime = 0;
 
+        const float k_paddingTime = 0.4f;
+
         void Awake()
         {
             m_Car = GetComponent<VPVehicleController>();
@@ -109,12 +111,12 @@ namespace KartGame.AI.Custom
 
         void Update()
         {
-            if (m_EndEpisode && (Time.time - episodeStartTime) <= 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) <= k_paddingTime)
             {
                 m_EndEpisode = false;
             }
 
-            if (m_EndEpisode && (Time.time - episodeStartTime) > 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) > k_paddingTime)
             {
                 m_EndEpisode = false;
                 Debug.Log("End episode!");
@@ -250,6 +252,7 @@ namespace KartGame.AI.Custom
             {
                 return;
             }
+
             switch (Mode)
             {
                 case AgentMode.Training:
@@ -286,6 +289,8 @@ namespace KartGame.AI.Custom
                     m_Acceleration = false;
                     m_Brake = false;
                     hit = null;
+                    lastHit = null;
+                    lastHitTime = 0;
                     m_Steering = 0f;
                     //await Task.Delay(1000);
 
@@ -349,7 +354,7 @@ namespace KartGame.AI.Custom
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Track") && collision.gameObject.name != lastHit && (Time.time - lastHitTime) > 0.4f)
+            if (collision.gameObject.CompareTag("Track") && (collision.gameObject.name != lastHit || (Time.time - lastHitTime) > k_paddingTime))
             {
                 hit = collision.gameObject.name;
             }
