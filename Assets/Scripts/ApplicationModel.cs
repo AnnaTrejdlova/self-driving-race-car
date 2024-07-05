@@ -12,6 +12,7 @@ public class ApplicationModel : MonoBehaviour
         {Assists.ESC, true },
         {Assists.ASR, true },
     };
+    static public string externalBrainsPath = "C:\\Users\\atrej\\Documents\\Programming\\ml-agents\\results";
 }
 
 public enum Transmission

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using EdyCommonTools;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UIElements;
+using UnityEditor.Rendering;
 
 namespace KartGame.AI.Custom
 {
@@ -58,12 +60,13 @@ namespace KartGame.AI.Custom
         [Tooltip("Reward the agent when it keeps accelerating")]
         public float AccelerationReward;
         #endregion
-        private Dictionary<string, float> m_RewardsDebug;
+        Dictionary<string, float> m_RewardsDebug;
 
 
         VPVehicleController m_Car;
-        Rigidbody m_rb;
+        public Rigidbody m_rb;
         VPStandardInput m_Input;
+        public Spline m_CenterlinePath;
         bool m_Acceleration;
         bool m_Brake;
         float m_Steering;
@@ -72,11 +75,13 @@ namespace KartGame.AI.Custom
         bool m_EndEpisode;
         float m_LastAccumulatedReward;
 
-        float episodeTime;
+        float episodeStartTime;
 
         string hit = null;
         string lastHit = null;
         float lastHitTime = 0;
+
+        const float k_paddingTime = 0.4f;
 
         void Awake()
         {
@@ -100,16 +105,18 @@ namespace KartGame.AI.Custom
             OnEpisodeBegin();
 
             if (Mode == AgentMode.Inferencing) m_CheckpointIndex = InitCheckpointIndex;
+
+            TrackCheckpoints.OnPlayerCorrectCheckpoint += TrackCheckpoints_OnPlayerCorrectCheckpoint;
         }
 
         void Update()
         {
-            if (m_EndEpisode && (Time.time - episodeTime) <= 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) <= k_paddingTime)
             {
                 m_EndEpisode = false;
             }
 
-            if (m_EndEpisode && (Time.time - episodeTime) > 0.4)
+            if (m_EndEpisode && (Time.time - episodeStartTime) > k_paddingTime)
             {
                 m_EndEpisode = false;
                 Debug.Log("End episode!");
@@ -117,7 +124,7 @@ namespace KartGame.AI.Custom
                 lastHit = hit;
                 lastHitTime = Time.time;
 
-                Debug.Log("Episode time: " + (Time.time - episodeTime));
+                Debug.Log("Episode time: " + (Time.time - episodeStartTime));
                 m_rb.Sleep();
                 m_Car.gameObject.SetActive(false);
                 //EndEpisode();
@@ -155,7 +162,20 @@ namespace KartGame.AI.Custom
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            sensor.AddObservation(m_rb.velocity.magnitude);
+            //sensor.AddObservation(m_rb.position); // Car position
+
+            int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
+            sensor.AddObservation((selectedGear == -1) ?-1f:1f * m_rb.velocity.magnitude); // Car velocity
+
+            bool isLimiterEngaged = false;
+            if (m_Car.speedControl.speedLimiter)
+            {
+                if (m_rb.velocity.magnitude >= m_Car.speedControl.speedLimit* 0.95f)
+                {
+                    isLimiterEngaged = true;
+                }
+            }
+            sensor.AddObservation(isLimiterEngaged); // Speed limiter engaged
 
             m_LastAccumulatedReward = 0.0f;
             m_EndEpisode = false;
@@ -168,6 +188,16 @@ namespace KartGame.AI.Custom
             }
 
             sensor.AddObservation(hit!=null);
+
+            // Position from centerline
+            float splinePos = m_CenterlinePath.Project(m_rb.position);
+            sensor.AddObservation(splinePos); // Position on the lap
+            Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
+            sensor.AddObservation((m_rb.position - projectedPoint).magnitude); // Position from centerline
+
+            // Rotation from centerline
+            Vector3 tangent = m_CenterlinePath.GetTangent(m_CenterlinePath.Project(m_rb.position));
+            sensor.AddObservation(Vector3.Angle(m_rb.transform.forward, tangent)); // Rotation from centerline
         }
 
         public override void OnActionReceived(ActionBuffers actions)
@@ -193,19 +223,47 @@ namespace KartGame.AI.Custom
             m_RewardsDebug["towardsCheckpoint"] += reward * TowardsCheckpointReward;
             AddReward((m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward);
             m_RewardsDebug["acceleration"] += (m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward;
-            AddReward(m_rb.velocity.magnitude * SpeedReward);
-            m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
+
+            int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
+            if (selectedGear > 0)
+            {
+                AddReward(m_rb.velocity.magnitude * SpeedReward);
+                m_RewardsDebug["speed"] += m_rb.velocity.magnitude * SpeedReward;
+            } else if (selectedGear == -1)
+            {
+                AddReward(-m_rb.velocity.magnitude * SpeedReward);
+                m_RewardsDebug["speed"] -= m_rb.velocity.magnitude * SpeedReward;
+            }
+        }
+
+        private void TrackCheckpoints_OnPlayerCorrectCheckpoint(object sender, System.EventArgs e)
+        {
+            AddReward(PassCheckpointReward);
+            m_RewardsDebug["passCheckpoint"] += PassCheckpointReward;
         }
 
         public override void OnEpisodeBegin()
         {
             Debug.Log("OnEpisodeBegin");
+
+            // Prevent OnEpisodeBegin to run twice
+            // Caused by disabling GameObject with associated CarAgent script (needed for succesful teleport)
+            if ((Time.time - episodeStartTime) < 0.1f)
+            {
+                return;
+            }
+
             switch (Mode)
             {
                 case AgentMode.Training:
-                    episodeTime = Time.time;
+                    episodeStartTime = Time.time;
                     m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
                     var collider = Colliders[m_CheckpointIndex];
+
+                    var trackCheckpoints = collider.GetComponent<CheckpointSingle>().trackCheckpoints;
+                    
+                    trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
+
                     //transform.localRotation = collider.transform.rotation;
                     //transform.position = collider.transform.position;
 
@@ -231,14 +289,27 @@ namespace KartGame.AI.Custom
                     m_Acceleration = false;
                     m_Brake = false;
                     hit = null;
+                    lastHit = null;
+                    lastHitTime = 0;
                     m_Steering = 0f;
                     //await Task.Delay(1000);
 
-                    Debug.Log("Position:");
-                    Debug.Log(collider.transform.position);
-                    Debug.Log(m_Car.cachedTransform.position);
-                    Debug.Log(m_Car.transform.position);
-                    Debug.Log(m_rb.transform.position);
+                    //Debug.Log("Position:");
+                    //Debug.Log(collider.transform.position);
+                    //Debug.Log(m_Car.cachedTransform.position);
+                    //Debug.Log(m_Car.transform.position);
+                    //Debug.Log(m_rb.transform.position);
+
+                    // Reset rewards
+                    m_RewardsDebug = new()
+                    {
+                        { "hitPenalty", 0f },
+                        { "passCheckpoint", 0f },
+                        { "towardsCheckpoint", 0f },
+                        { "speed", 0f },
+                        { "acceleration", 0f },
+                    };
+
                     //RequestDecision();
                     break;
                 default:
@@ -283,7 +354,7 @@ namespace KartGame.AI.Custom
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.CompareTag("Track") && collision.gameObject.name != lastHit && (Time.time - lastHitTime) > 0.4)
+            if (collision.gameObject.CompareTag("Track") && (collision.gameObject.name != lastHit || (Time.time - lastHitTime) > k_paddingTime))
             {
                 hit = collision.gameObject.name;
             }
@@ -291,17 +362,31 @@ namespace KartGame.AI.Custom
 
         private void OnGUI()
         {
+            GUILayout.Label("frictionMultiplier: " + m_Car.tireFriction.frictionMultiplier.ToString());
             GUILayout.Label("Reward: " + GetCumulativeReward().ToString());
             GUILayout.Label("CompletedEpisodes: " + CompletedEpisodes.ToString());
-            GUILayout.Label("Episode time: " + (Time.time - episodeTime));
+            GUILayout.Label("Episode time: " + (Time.time - episodeStartTime));
             GUILayout.Label("Position: " + m_Car.transform.position.ToString()); 
             GUILayout.Label("fixedDeltaTime: " + Time.fixedDeltaTime.ToString());
 
             GameObject.Find("/GameHUD/HUD/Rewards").GetComponent<TextMeshProUGUI>().text = 
 $@"<b>Rewards:</b>
+passCheckpoint: {m_RewardsDebug["passCheckpoint"].ToString("F2")}
 towardsCheckpoint: {m_RewardsDebug["towardsCheckpoint"].ToString("F2")}
 acceleration: {m_RewardsDebug["acceleration"].ToString("F2")}
 speed: {m_RewardsDebug["speed"].ToString("F2")}";
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            float splinePos = m_CenterlinePath.Project(m_rb.position);
+            Vector3 projectedPoint = m_CenterlinePath.GetPosition(splinePos);
+            Vector3 tangent = m_CenterlinePath.GetTangent(m_CenterlinePath.Project(m_rb.position));
+
+            Gizmos.DrawLine(projectedPoint, projectedPoint + tangent.normalized * 2);
+            Gizmos.DrawSphere(projectedPoint, 0.2f);
+            Gizmos.DrawLine(m_rb.position + new Vector3(0, 1.5f, 0), m_rb.position + m_rb.transform.forward*3 + new Vector3(0, 1.5f, 0));
         }
     }
 }
