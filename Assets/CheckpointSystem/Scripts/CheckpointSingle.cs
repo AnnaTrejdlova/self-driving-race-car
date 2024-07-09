@@ -5,7 +5,7 @@ using VehiclePhysics;
 
 public class CheckpointSingle : MonoBehaviour {
 
-    public TrackCheckpoints trackCheckpoints;
+    [HideInInspector] public TrackCheckpoints trackCheckpoints;
     //private MeshRenderer meshRenderer;
 
     private void Awake() {

@@ -87,7 +87,7 @@ namespace KartGame.AI.Custom
         {
             m_Car = GetComponent<VPVehicleController>();
             m_rb = GetComponent<Rigidbody>();
-            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint").OrderBy((gameObject)=> gameObject.name).Select((gameObject) => gameObject.GetComponent<Collider>()).ToArray();
+            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint").Where((gameObject) => gameObject.name.IndexOf(" D") != -1).OrderBy((gameObject)=> gameObject.name).Select((gameObject) => gameObject.GetComponent<Collider>()).ToArray();
             m_Input = GetComponent<VPStandardInput>();
         }
 
@@ -165,12 +165,13 @@ namespace KartGame.AI.Custom
             //sensor.AddObservation(m_rb.position); // Car position
 
             int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
-            sensor.AddObservation((selectedGear == -1) ?-1f:1f * m_rb.velocity.magnitude); // Car velocity
+            float velocity = (selectedGear == -1) ? -1f : 1f * m_rb.velocity.magnitude;
+            sensor.AddObservation(velocity); // Car velocity
 
             bool isLimiterEngaged = false;
             if (m_Car.speedControl.speedLimiter)
             {
-                if (m_rb.velocity.magnitude >= m_Car.speedControl.speedLimit* 0.95f)
+                if (velocity >= m_Car.speedControl.speedLimit* 0.95f)
                 {
                     isLimiterEngaged = true;
                 }
