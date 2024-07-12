@@ -26824,7 +26824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 15.2
+      value: -43.16
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalPosition.y
@@ -26832,23 +26832,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -81.41
+      value: -32.57
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9996191
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.027597671
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -26856,7 +26856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 3.163
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375927, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -26974,7 +26974,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 548e3308e99c5b344af78844fee2916f, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 08a2e9b3c5c76824c99749b619c3adcc, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: Car Behavior
