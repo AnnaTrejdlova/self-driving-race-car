@@ -8,20 +8,14 @@ git clone --shallow-since=2023-10-10 -b develop https://github.com/Unity-Technol
 cd ml-agents
 git checkout f3dc8f615044c9226c7e7ed308e0aadc1def3b4d
 ```
+`--shallow-since` allows for faster download, but doesn't include history
 
-In root ml-agents folder run to observe training:
-`tensorboard --logdir results --port 6006`
-
-`cd %USERPROFILE%/Documents/Programming/ml-agents`
-`conda activate mlagents`
-`mlagents-learn --force`
-`mlagents-learn config/sac/Car.yaml --run-id=fixedTeleport`
-`mlagents-learn config/Car-sac-gail-bc-sp.yaml --run-id=sac-gail-bc-sp`
-`mlagents-learn config/Car-sac-gail-bc-sp.yaml --run-id=sac-gailconcurrent --env="C:\Users\atrej\Unity\ML URP\Build_training_env\RacingGame" --num-envs=4`
-
+## Running the training
 ```
 cd %USERPROFILE%/Documents/Programming/ml-agents
 conda activate mlagents
-mlagents-learn config/Car-sac-gail-bc-sp2.yaml --run-id=sac-gailconcurrent_centerline_speedlimit --env="C:\Users\atrej\Unity\ML URP\Build_training_env\RacingGame" --num-envs=4 --force
-
+mlagents-learn config/Car-ppo.yaml --run-id=ppo_gail2 --env="%USERPROFILE%/Unity/ML URP/Build_training_env/RacingGame" --num-envs=4
 ```
+
+In root ml-agents folder run to observe training:
+`tensorboard --logdir results --port 6006`
