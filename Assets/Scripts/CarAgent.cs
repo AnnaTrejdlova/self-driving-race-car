@@ -87,7 +87,15 @@ namespace KartGame.AI.Custom
         {
             m_Car = GetComponent<VPVehicleController>();
             m_rb = GetComponent<Rigidbody>();
-            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint").Where((gameObject) => gameObject.name.IndexOf(" D") != -1).OrderBy((gameObject)=> gameObject.name).Select((gameObject) => gameObject.GetComponent<Collider>()).ToArray();
+            GameManager gameManager = FindAnyObjectByType<GameManager>();
+            string selectedTrack = gameManager.trackDict[gameManager.activeTrack];
+            var trackTransform = GameObject.Find(selectedTrack).transform;
+
+            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint")
+                .Where((gameObject) => gameObject.transform.parent.parent.parent == trackTransform)
+                .OrderBy((gameObject)=> gameObject.name)
+                .Select((gameObject) => gameObject.GetComponent<Collider>())
+                .ToArray();
             m_Input = GetComponent<VPStandardInput>();
         }
 

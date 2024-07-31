@@ -7,6 +7,13 @@ public class GameManager : MonoBehaviour
 {
     VPVehicleController vehicle;
 
+    public Track activeTrack;
+    public Dictionary<Track, string> trackDict = new()
+    {
+        { Track.TrainingSetA, "Training Set A" },
+        { Track.TrainingSetD, "Training Set D" },
+    };
+
     // Start is called before the first frame update, gets also called after unpausing
     public void Start()
     {
@@ -32,5 +39,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public enum Track
+    {
+        TrainingSetA,
+        TrainingSetD
     }
 }
