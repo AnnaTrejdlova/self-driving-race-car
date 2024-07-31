@@ -87,7 +87,7 @@ namespace KartGame.AI.Custom
         {
             m_Car = GetComponent<VPVehicleController>();
             m_rb = GetComponent<Rigidbody>();
-            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint").Where((gameObject) => gameObject.name.IndexOf(" D") != -1).OrderBy((gameObject)=> gameObject.name).Select((gameObject) => gameObject.GetComponent<Collider>()).ToArray();
+            Colliders = GameObject.FindGameObjectsWithTag("Checkpoint").Where((gameObject) => gameObject.name.IndexOf(" A") != -1).OrderBy((gameObject)=> gameObject.name).Select((gameObject) => gameObject.GetComponent<Collider>()).ToArray();
             m_Input = GetComponent<VPStandardInput>();
         }
 
@@ -162,8 +162,6 @@ namespace KartGame.AI.Custom
 
         public override void CollectObservations(VectorSensor sensor)
         {
-            //sensor.AddObservation(m_rb.position); // Car position
-
             int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
             float velocity = (selectedGear == -1) ? -1f : 1f * m_rb.velocity.magnitude;
             sensor.AddObservation(velocity); // Car velocity
@@ -207,7 +205,18 @@ namespace KartGame.AI.Custom
             //Debug.Log(actions.DiscreteActions[1]);
             //Debug.Log("");
             base.OnActionReceived(actions);
-            InterpretDiscreteActions(actions);
+
+            var discreteActionsOut = actions.DiscreteActions;
+            var continuousActionsOut = actions.ContinuousActions;
+
+            if (discreteActionsOut.Length != 0)
+            {
+                InterpretDiscreteActions(actions);
+            }
+            else if (continuousActionsOut.Length != 0)
+            {
+                InterpretContinuousActions(actions);
+            }
 
             m_Input.externalThrottle = m_Acceleration ? 1f : 0f;
             m_Input.externalBrake = m_Brake ? 1f : 0f;
@@ -225,6 +234,7 @@ namespace KartGame.AI.Custom
             AddReward((m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward);
             m_RewardsDebug["acceleration"] += (m_Acceleration && !m_Brake ? 1.0f : 0.0f) * AccelerationReward;
 
+            // Add reward for speed
             int selectedGear = m_Car.data.Get(Channel.Vehicle, VehicleData.GearboxGear);
             if (selectedGear > 0)
             {
@@ -265,41 +275,19 @@ namespace KartGame.AI.Custom
                     
                     trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
 
-                    //transform.localRotation = collider.transform.rotation;
-                    //transform.position = collider.transform.position;
-
                     // Teleport
-                    //m_rb.Sleep();
-                    //m_Car.gameObject.SetActive(false);
                     m_rb.isKinematic = true;
                     m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
-                    //m_Car.HardReposition(collider.transform.position - new Vector3(0,1,0), collider.transform.rotation, true);
-                    //m_rb.transform.position = collider.transform.position - new Vector3(0, 1, 0);
-                    //m_rb.transform.rotation = collider.transform.rotation;
                     m_rb.isKinematic = false;
                     m_Car.gameObject.SetActive(true);
                     m_rb.WakeUp();
-                    //m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
 
-                    //await Task.Delay(1000);
-                    //m_Car.paused = false;
-                    //m_rb.isKinematic = false;
-                    //m_Car.SingleStep();
-
-                    //m_rb.velocity = default;
                     m_Acceleration = false;
                     m_Brake = false;
                     hit = null;
                     lastHit = null;
                     lastHitTime = 0;
                     m_Steering = 0f;
-                    //await Task.Delay(1000);
-
-                    //Debug.Log("Position:");
-                    //Debug.Log(collider.transform.position);
-                    //Debug.Log(m_Car.cachedTransform.position);
-                    //Debug.Log(m_Car.transform.position);
-                    //Debug.Log(m_rb.transform.position);
 
                     // Reset rewards
                     m_RewardsDebug = new()
@@ -320,37 +308,66 @@ namespace KartGame.AI.Custom
 
         void InterpretDiscreteActions(ActionBuffers actions)
         {
-            //Debug.Log(actions.DiscreteActions.Length);
-            //Debug.Log(actions.DiscreteActions[0]);
-            //Debug.Log(actions.DiscreteActions[1]);
-            m_Steering = actions.DiscreteActions[0] - 1f;
-            m_Acceleration = actions.DiscreteActions[1] > 1.0f;
-            m_Brake = actions.DiscreteActions[1] < 1.0f;
+            m_Steering = actions.DiscreteActions[0] - 1f; // {-1, 0, 1}
+            m_Acceleration = actions.DiscreteActions[1] > 1.0f; // true if 2
+            m_Brake = actions.DiscreteActions[1] < 1.0f; // true if 0
+        }
+
+        void InterpretContinuousActions(ActionBuffers actions)
+        {
+            m_Steering = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f); // [-1, 1]
+            m_Acceleration = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) >= 0.8f; // [0.8, 1]
+            m_Brake = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) <= -0.8f; // [-1, 0.8]
         }
 
         public override void Heuristic(in ActionBuffers actionsOut)
         {
             var discreteActionsOut = actionsOut.DiscreteActions;
-            discreteActionsOut[0] = 1;
-            discreteActionsOut[1] = 1;
-            if (Input.GetKey(KeyCode.A))
+            var continuousActionsOut = actionsOut.ContinuousActions;
+
+            if (discreteActionsOut.Length != 0)
             {
-                discreteActionsOut[0] = 0;
-            }
-            if (Input.GetKey(KeyCode.D))
+                discreteActionsOut[0] = 1;
+                discreteActionsOut[1] = 1;
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    discreteActionsOut[0] = 0;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    discreteActionsOut[0] = 2;
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    discreteActionsOut[1] = 2;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    discreteActionsOut[1] = 0;
+                }
+            } else if (continuousActionsOut.Length != 0)
             {
-                discreteActionsOut[0] = 2;
+                continuousActionsOut[0] = Input.GetAxis("Horizontal");
+                continuousActionsOut[1] = Input.GetAxis("Vertical");
+
+                if (Input.GetKey(KeyCode.A))
+                {
+                    continuousActionsOut[0] = -1f;
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    continuousActionsOut[0] = 1f;
+                }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    continuousActionsOut[1] = 1f;
+                }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    continuousActionsOut[1] = -1f;
+                }
             }
-            if (Input.GetKey(KeyCode.W))
-            {
-                discreteActionsOut[1] = 2;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                discreteActionsOut[1] = 0;
-            }
-            //Debug.Log(continuousActionsOut[0]);
-            //Debug.Log(continuousActionsOut[1]);
         }
 
         private void OnCollisionEnter(Collision collision)

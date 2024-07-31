@@ -53,7 +53,7 @@ public class TimeManager2 : MonoBehaviour
 
         FitnessText = GameObject.Find("Fitness").GetComponent<TextMeshProUGUI>();
         raceLine = FindFirstObjectByType<Spline>();
-        vehicleRB = GameObject.Find("VPP Sport Coupe").GetComponent<Rigidbody>();
+        vehicleRB = GameObject.FindWithTag("Player").GetComponent<Rigidbody>();
 
         startLinePosition = raceLine.Project(GameObject.Find("StartFinishLine").transform.position);
 

@@ -14,7 +14,7 @@ git checkout f3dc8f615044c9226c7e7ed308e0aadc1def3b4d
 ```
 cd %USERPROFILE%/Documents/Programming/ml-agents
 conda activate mlagents
-mlagents-learn config/Car-ppo.yaml --run-id=ppo_gail2 --env="%USERPROFILE%/Unity/ML URP/Build_training_env/RacingGame" --num-envs=4
+mlagents-learn config/Car-ppo-cont.yaml --run-id=ppo_gail_cont --env="%USERPROFILE%/Unity/ML URP/Build_training_env/RacingGame" --num-envs=4
 ```
 
 In root ml-agents folder run to observe training:

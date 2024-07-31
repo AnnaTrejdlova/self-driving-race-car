@@ -16,7 +16,7 @@ public class GroundManager : MonoBehaviour
     {
         wheelCollider = GetComponent<VPWheelCollider>();
         vehicleBase = GetComponent<VehicleBase>();
-        vehicleController = GameObject.Find("VPP Sport Coupe").GetComponent<VPVehicleController>();
+        vehicleController = FindAnyObjectByType<VPVehicleController>();
 
         for (int i = 0; i < 4; i++)
         {
