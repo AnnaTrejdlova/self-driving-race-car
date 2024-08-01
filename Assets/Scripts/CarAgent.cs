@@ -81,12 +81,17 @@ namespace KartGame.AI.Custom
         string lastHit = null;
         float lastHitTime = 0;
 
+        TimeManager2 timeManager;
+
         const float k_paddingTime = 0.4f;
 
         void Awake()
         {
             m_Car = GetComponent<VPVehicleController>();
             m_rb = GetComponent<Rigidbody>();
+
+            timeManager = FindAnyObjectByType<TimeManager2>();
+
             GameManager gameManager = FindAnyObjectByType<GameManager>();
             string selectedTrack = gameManager.trackDict[gameManager.activeTrack];
             var trackTransform = GameObject.Find(selectedTrack).transform;
@@ -261,69 +266,44 @@ namespace KartGame.AI.Custom
             {
                 return;
             }
+            episodeStartTime = Time.time;
+            timeManager.StopRace();
 
-            switch (Mode)
-            {
-                case AgentMode.Training:
-                    episodeStartTime = Time.time;
-                    m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
-                    var collider = Colliders[m_CheckpointIndex];
+            if (Mode == AgentMode.Inferencing) m_CheckpointIndex = InitCheckpointIndex;
+            if (Mode == AgentMode.Training) m_CheckpointIndex = Random.Range(0, Colliders.Length - 1);
+            var collider = Colliders[m_CheckpointIndex]; // Checkpoint collider to teleport to
 
-                    var trackCheckpoints = collider.GetComponent<CheckpointSingle>().trackCheckpoints;
+            var trackCheckpoints = collider.GetComponent<CheckpointSingle>().trackCheckpoints;
                     
-                    trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginning
+            trackCheckpoints.nextCheckpointSingleIndexList[0] = m_CheckpointIndex; // Set the checkpoint beginningc
 
-                    //transform.localRotation = collider.transform.rotation;
-                    //transform.position = collider.transform.position;
+            // Teleport
+            m_rb.isKinematic = true;
+            m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
+            m_rb.isKinematic = false;
+            m_Car.gameObject.SetActive(true);
+            m_rb.WakeUp();
 
-                    // Teleport
-                    //m_rb.Sleep();
-                    //m_Car.gameObject.SetActive(false);
-                    m_rb.isKinematic = true;
-                    m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
-                    //m_Car.HardReposition(collider.transform.position - new Vector3(0,1,0), collider.transform.rotation, true);
-                    //m_rb.transform.position = collider.transform.position - new Vector3(0, 1, 0);
-                    //m_rb.transform.rotation = collider.transform.rotation;
-                    m_rb.isKinematic = false;
-                    m_Car.gameObject.SetActive(true);
-                    m_rb.WakeUp();
-                    //m_Car.Reposition(collider.transform.position - new Vector3(0, 1, 0), collider.transform.rotation);
+            // Reset car values
+            //m_rb.velocity = default;
+            m_Acceleration = false;
+            m_Brake = false;
+            hit = null;
+            lastHit = null;
+            lastHitTime = 0;
+            m_Steering = 0f;
 
-                    //await Task.Delay(1000);
-                    //m_Car.paused = false;
-                    //m_rb.isKinematic = false;
-                    //m_Car.SingleStep();
+            // Reset rewards
+            m_RewardsDebug = new()
+            {
+                { "hitPenalty", 0f },
+                { "passCheckpoint", 0f },
+                { "towardsCheckpoint", 0f },
+                { "speed", 0f },
+                { "acceleration", 0f },
+            };
 
-                    //m_rb.velocity = default;
-                    m_Acceleration = false;
-                    m_Brake = false;
-                    hit = null;
-                    lastHit = null;
-                    lastHitTime = 0;
-                    m_Steering = 0f;
-                    //await Task.Delay(1000);
-
-                    //Debug.Log("Position:");
-                    //Debug.Log(collider.transform.position);
-                    //Debug.Log(m_Car.cachedTransform.position);
-                    //Debug.Log(m_Car.transform.position);
-                    //Debug.Log(m_rb.transform.position);
-
-                    // Reset rewards
-                    m_RewardsDebug = new()
-                    {
-                        { "hitPenalty", 0f },
-                        { "passCheckpoint", 0f },
-                        { "towardsCheckpoint", 0f },
-                        { "speed", 0f },
-                        { "acceleration", 0f },
-                    };
-
-                    //RequestDecision();
-                    break;
-                default:
-                    break;
-            }
+            //RequestDecision();
         }
 
         void InterpretDiscreteActions(ActionBuffers actions)

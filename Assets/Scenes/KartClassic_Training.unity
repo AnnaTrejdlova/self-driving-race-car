@@ -207,11 +207,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &12404586 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344858958172, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &34821894
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,11 +566,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &62359087 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444345551500610, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &64488321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1972,11 +1962,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &136304225 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444345046720302, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &143772702
 GameObject:
   m_ObjectHideFlags: 0
@@ -3170,11 +3155,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &224642725 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444346160276676, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &226808620
 GameObject:
   m_ObjectHideFlags: 0
@@ -4808,11 +4788,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &331806862 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344974515888, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &341555361
 GameObject:
   m_ObjectHideFlags: 0
@@ -7784,11 +7759,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &638208219 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344781495682, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &642380436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7968,11 +7938,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &667859714 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444346243019186, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &669171121
 GameObject:
   m_ObjectHideFlags: 0
@@ -8732,11 +8697,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &741937569 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444345715549824, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &762859655
 GameObject:
   m_ObjectHideFlags: 0
@@ -9292,11 +9252,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &801838063 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344955179428, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &802000868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9661,11 +9616,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &814975104 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444346070339959, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &816537008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9919,11 +9869,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &820604982 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444345239681146, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &824914828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10462,7 +10407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8756014728399481205, guid: e16a38f021dad6241a9d0b65b66702c6, type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 247
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8756014728399481206, guid: e16a38f021dad6241a9d0b65b66702c6, type: 3}
       propertyPath: vehicle
@@ -11067,11 +11012,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &902068605 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444345238998609, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &905284339
 GameObject:
   m_ObjectHideFlags: 0
@@ -11771,11 +11711,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1007642056 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344625587169, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1014514210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13313,11 +13248,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1134549600 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444346074371002, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1137340217
 GameObject:
   m_ObjectHideFlags: 0
@@ -13446,7 +13376,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 247
+    m_Bits: 4294967295
 --- !u!114 &1144890736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14561,7 +14491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4fc5f3e470bb8b4e9e8c2fec1db73de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  track: 0
+  activeTrack: 0
 --- !u!4 &1204739662
 Transform:
   m_ObjectHideFlags: 0
@@ -17935,11 +17865,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1501182471 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344969470435, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1501330924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19712,11 +19637,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1604892409 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344611465982, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1607723701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22935,11 +22855,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1863915949 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444344634230275, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1865181396
 GameObject:
   m_ObjectHideFlags: 0
@@ -25652,11 +25567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackCheckpoints: {fileID: 0}
---- !u!65 &1997484649 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 2217444346122127595, guid: 9a92f3f32c8f0fc4482a893deac1ba4c, type: 3}
-  m_PrefabInstance: {fileID: 1974912080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1999780903
 GameObject:
   m_ObjectHideFlags: 0
@@ -26338,6 +26248,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2069814030389217171, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 2069814030545375921, guid: f7a352f52c0b4034a8e157c2e33e54c4, type: 3}
       propertyPath: externalIgnition
       value: 2
@@ -26502,35 +26416,17 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 10000
-  Mode: 0
-  InitCheckpointIndex: 0
-  Colliders:
-  - {fileID: 820604982}
-  - {fileID: 1997484649}
-  - {fileID: 62359087}
-  - {fileID: 801838063}
-  - {fileID: 1007642056}
-  - {fileID: 638208219}
-  - {fileID: 814975104}
-  - {fileID: 224642725}
-  - {fileID: 1604892409}
-  - {fileID: 902068605}
-  - {fileID: 1134549600}
-  - {fileID: 667859714}
-  - {fileID: 12404586}
-  - {fileID: 136304225}
-  - {fileID: 741937569}
-  - {fileID: 1863915949}
-  - {fileID: 1501182471}
-  - {fileID: 331806862}
+  Mode: 1
+  InitCheckpointIndex: 10
+  Colliders: []
   CheckpointMask:
     serializedVersion: 2
     m_Bits: 128
-  raceLine: {fileID: 1195372211}
+  raceLine: {fileID: 189290553}
   HitPenalty: -1
   PassCheckpointReward: 10
-  TowardsCheckpointReward: 0.05
-  SpeedReward: 0.03
+  TowardsCheckpointReward: 0.02
+  SpeedReward: 0.005
   AccelerationReward: 0.01
   m_rb: {fileID: 177837611}
   m_CenterlinePath: {fileID: 189290553}
@@ -26558,7 +26454,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: 08a2e9b3c5c76824c99749b619c3adcc, type: 3}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: Car Behavior
   TeamId: 0
   m_UseChildSensors: 1
@@ -26606,7 +26502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
+  DecisionPeriod: 1
   DecisionStep: 0
   TakeActionsBetweenDecisions: 0
 --- !u!114 &2059540501

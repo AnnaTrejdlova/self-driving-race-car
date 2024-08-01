@@ -6,7 +6,6 @@ using VehiclePhysics;
 public class GroundManager : MonoBehaviour
 {
     VPWheelCollider wheelCollider;
-    VehicleBase vehicleBase;
     VPVehicleController vehicleController;
     WheelHit hit;
     int wheelIndex;
@@ -15,8 +14,7 @@ public class GroundManager : MonoBehaviour
     void Start()
     {
         wheelCollider = GetComponent<VPWheelCollider>();
-        vehicleBase = GetComponent<VehicleBase>();
-        vehicleController = GameObject.Find("VPP Sport Coupe").GetComponent<VPVehicleController>();
+        vehicleController = gameObject.transform.parent.parent.GetComponent<VPVehicleController>();
 
         for (int i = 0; i < 4; i++)
         {
