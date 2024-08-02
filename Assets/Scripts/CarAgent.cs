@@ -81,7 +81,7 @@ namespace KartGame.AI.Custom
         string lastHit = null;
         float lastHitTime = 0;
 
-        TimeManager2 timeManager;
+        LapTimeManager timeManager;
 
         const float k_paddingTime = 0.4f;
 
@@ -90,7 +90,7 @@ namespace KartGame.AI.Custom
             m_Car = GetComponent<VPVehicleController>();
             m_rb = GetComponent<Rigidbody>();
 
-            timeManager = FindAnyObjectByType<TimeManager2>();
+            timeManager = FindAnyObjectByType<LapTimeManager>();
 
             GameManager gameManager = FindAnyObjectByType<GameManager>();
             string selectedTrack = gameManager.trackDict[gameManager.activeTrack];

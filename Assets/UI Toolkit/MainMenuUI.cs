@@ -31,7 +31,6 @@ public class MainMenuUI : MonoBehaviour
         scenes = new Dictionary<Scene, string>
         {
             {Scene.WallRing, "KartClassic_Training_followTarget" },
-            {Scene.Nordschleife, "Nordschleife Location Scene" }
         };
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;

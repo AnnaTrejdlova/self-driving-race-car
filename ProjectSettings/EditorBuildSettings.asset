@@ -5,10 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Karting/Scenes/MLTraining/KartClassic_Training.unity
-    guid: 4cd7f6ff2b746f24c87800ae8e1b28e9
-  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: c4773eeb385c9d744981f25da658b96e
   - enabled: 0
@@ -18,10 +14,10 @@ EditorBuildSettings:
     path: Assets/Scenes/KartClassic_Training.unity
     guid: 4b8793b1f2bed9a4b80c6c350e5cc6c2
   - enabled: 0
-    path: Assets/Scenes/KartClassic_Training_Handling.unity
-    guid: f300bc32184f5ad4eae8fb0891027320
+    path: Assets/Scenes/Training.unity
+    guid: 4b8793b1f2bed9a4b80c6c350e5cc6c2
   - enabled: 0
-    path: Assets/Scenes/KartClassic_Training_followTarget.unity
+    path: Assets/Scenes/Training_followTarget.unity
     guid: d7680d1ba1e384444a163d0f4a6f4798
   - enabled: 0
     path: Assets/Nordschleife/Nordschleife Location Scene.unity
