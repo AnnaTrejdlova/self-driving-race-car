@@ -30,7 +30,7 @@ public class MainMenuUI : MonoBehaviour
     {
         scenes = new Dictionary<Scene, string>
         {
-            {Scene.WallRing, "KartClassic_Training_followTarget" },
+            {Scene.WallRing, "Game" },
         };
 
         VisualElement root = GetComponent<UIDocument>().rootVisualElement;
